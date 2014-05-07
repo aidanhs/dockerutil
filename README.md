@@ -1,5 +1,11 @@
-Add the bin folder to your path
+Get it with
 
-Gives you
+```sh
+ $ curl https://raw.githubusercontent.com/aidanhs/dockerutil/master/auto.sh | sh
+```
+
+And follow the instructions to add the bin folder to your path
+
+It gives you
  - `killdock` - kill all running containers
  - `cleandock` - rm all stopped containers

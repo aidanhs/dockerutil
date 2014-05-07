@@ -2,23 +2,25 @@ set -e
 
 echo
 
-DUBIN=
+DU_BIN=
 if [ -d "$(pwd)/.git" ]; then
 	# Assume running from dockerutil repo
-	DUBIN='$(pwd)/bin'
+	DU_BIN='$(pwd)/bin'
 elif [ -d "$(pwd)/dockerutil/.git" ]; then
 	# Dockerutil exists
-	DUBIN='$(pwd)/dockerutil/bin'
+	DU_BIN='$(pwd)/dockerutil/bin'
 else
 	# Dockerutil doesn't exist
-	DUBIN='$(pwd)/dockerutil/bin'
-	echo "Cloning dockerutil repo"
+	DU_BIN='$(pwd)/dockerutil/bin'
+	echo "Cloning dockerutil repo..."
+	echo
 	git clone https://github.com/aidanhs/dockerutil.git
+	echo
 fi
 
 echo 'Now you can run'
 echo
-echo '    echo -e "\\nPATH=\"'"$DUBIN"':\$PATH\"" >> ~/.bashrc'
+echo '    echo -e "\\nexport PATH=\"'"$DU_BIN"':\$PATH\"" >> ~/.bashrc'
 echo '    . ~/.bashrc'
 echo
 echo 'to make the commands available in the current shell and every'
