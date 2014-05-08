@@ -18,6 +18,8 @@ else
 	echo
 fi
 
+chmod +x $DU_BIN/*
+
 echo 'Now you can run'
 echo
 echo '    echo -e "\\nexport PATH=\"'"$DU_BIN"':\$PATH\"" >> ~/.bashrc'

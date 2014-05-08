@@ -1,0 +1,6 @@
+# Utils for docker
+# To be sourced by all utils in this repo.
+set -o errexit
+set -o nounset
+DOCKER=${DOCKER:-sudo docker}
+
