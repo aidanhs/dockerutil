@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Take an image and flatten the layers.
 # Useful if you're saving state over and over again and don't care about the history.
 
