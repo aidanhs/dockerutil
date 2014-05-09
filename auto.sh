@@ -5,13 +5,13 @@ echo
 DU_BIN=
 if [ -d "$(pwd)/.git" ]; then
 	# Assume running from dockerutil repo
-	DU_BIN='$(pwd)/bin'
+	DU_BIN="$(pwd)/bin"
 elif [ -d "$(pwd)/dockerutil/.git" ]; then
 	# Dockerutil exists
-	DU_BIN='$(pwd)/dockerutil/bin'
+	DU_BIN="$(pwd)/dockerutil/bin"
 else
 	# Dockerutil doesn't exist
-	DU_BIN='$(pwd)/dockerutil/bin'
+	DU_BIN="$(pwd)/dockerutil/bin"
 	echo "Cloning dockerutil repo..."
 	echo
 	git clone https://github.com/aidanhs/dockerutil.git
