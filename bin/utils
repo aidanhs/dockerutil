@@ -2,5 +2,6 @@
 # To be sourced by all utils in this repo.
 set -o errexit
 set -o nounset
+set -o pipefail
 DOCKER=${DOCKER:-sudo docker}
 
