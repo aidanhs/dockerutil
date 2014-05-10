@@ -1,4 +1,7 @@
-source utils
+#!/bin/sh
+
+. utils
+
 date
 if [ $($DOCKER ps -a | tail -n +2 | wc -l) -gt 0 ]; then
   $DOCKER ps -a | tail -n +2 | awk '{print $1}' | xargs $DOCKER kill

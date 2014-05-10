@@ -1,7 +1,9 @@
+#!/bin/sh
+
 # Take an image and flatten the layers.
 # Useful if you're saving state over and over again and don't care about the history.
 
-source utils
+. utils
 IMAGE=$1
 
 echo "Running: $IMAGE"
@@ -9,7 +11,7 @@ $DOCKER run $IMAGE /bin/true
 # Take the first example of the image in the ps -a list
 echo "Getting tag, exporting and importing"
 TAG=$($DOCKER ps -a | grep $IMAGE | head -1 | awk '{print $1}' | sed 's/\(.*\)/sudo docker export \1 | sudo docker import -/g' | sh)
-if [[ $TAG = "" ]]
+if [ "$TAG" = "" ]
 then
 	echo "nothing to tag"
 	exit

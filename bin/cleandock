@@ -1,4 +1,6 @@
-source utils
+#!/bin/sh
+
+. utils
 date
 if [ $($DOCKER ps -a | tail -n +2 | grep 'Exit -*[0-9]* ' | wc -l) -gt 0 ]; then
   $DOCKER ps -a | tail -n +2 | grep 'Exit -*[0-9]* ' | awk '{print $1}' | xargs $DOCKER rm
