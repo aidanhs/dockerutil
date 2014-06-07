@@ -1,0 +1,42 @@
+#!/bin/bash
+DEFAULT_INDEX_PORT=5000
+DEFAULT_INDEX_SERVER=localhost
+DEFAULT_INDEX_DIR=/srv/registry
+DEFAULT_LIBRARY=library
+function usage() {
+	echo "$0 <repository name> <library, default: ${DEFAULT_LIBRARY}> <index directory, default: ${DEFAULT_INDEX_DIR}> <index server, default: ${DEFAULT_INDEX_SERVER}> <index port, default: ${DEFAULT_INDEX_PORT}>"
+	exit 1
+}
+if [[ $1 = "" ]]
+then
+	usage
+fi
+set -o nounset
+REPOSITORY=$1
+LIBRARY=${2:-${DEFAULT_LIBRARY}}
+INDEX_DIR=${3:-/srv/registry}
+INDEX_SERVER=${4:-localhost}
+INDEX_PORT=${5:-5000}
+
+if [ x${REPOSITORY} == "x" ]
+then
+	echo "provide repo, current ones are:"
+	echo "`ls ${INDEX_DIR}/repositories/${LIBRARY}`"
+	exit
+fi
+pushd ${INDEX_DIR} > /dev/null 2>&1
+echo "Running:"
+grep Tag ${INDEX_DIR}/repositories/${LIBRARY}/${REPOSITORY}/_index_images | sed 's/"/\n/g' | grep "^[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f].*" | sed "s/\(.*\)/echo -n \"\1 \" ; grep -rnw \1 repositories\/${LIBRARY}\/*\/_index_images | wc -l/g" | sh | grep -w 1 | awk '{print $1}' | sed 's/\(.*\)/rm -rf repositories\/images\/\1/g'
+grep Tag ${INDEX_DIR}/repositories/${LIBRARY}/${REPOSITORY}/_index_images | sed 's/"/\n/g' | grep "^[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f].*" | sed "s/\(.*\)/echo -n \"\1 \" ; grep -rnw \1 repositories\/${LIBRARY}\/*\/_index_images | wc -l/g" | sh | grep -w 1 | awk '{print $1}' | sed 's/\(.*\)/rm -rf repositories\/images\/\1/g' | sh
+pushd repositories/${LIBRARY} > /dev/null 2>&1
+rm -rf ${REPOSITORY}
+popd > /dev/null 2>&1
+popd > /dev/null 2>&1
+
+
+
+
+# Delete orphaned images
+curl -X DELETE http://${INDEX_SERVER}:${INDEX_PORT}/v1/repositories/${LIBRARY}/${REPOSITORY}/tags
+for d in `ls ${INDEX_DIR}/images`; do grep -rnw $d ${INDEX_DIR}/repositories | wc -l | sed "s/\(.*\)/$d \1/" | grep -w 0 | awk '{print $1}' | xargs -IXXX sudo rm -rf ${INDEX_DIR}/images/XXX; done
+
