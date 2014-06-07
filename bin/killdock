@@ -3,7 +3,7 @@
 . utils
 
 date
-exception="${1:-.*}"
+exception="${1:-$^}"
 if [ $($DOCKER ps -a | tail -n +2 | wc -l) -gt 0 ]; then
-  $DOCKER ps -a | tail -n +2 | grep -v $exception | awk '{print $1}' | xargs $DOCKER kill
+  $DOCKER ps -a | tail -n +2 | grep -v "$exception" | awk '{print $1}' | xargs $DOCKER kill
 fi
