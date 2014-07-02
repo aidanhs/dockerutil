@@ -2,6 +2,8 @@
 # To be sourced by all utils in this repo.
 set -o errexit
 set -o nounset
-set -o pipefail
+if [ $(set -o | grep '^pipefail' | wc -l) -gt 0 ]; then
+	set -o pipefail
+fi
 DOCKER=${DOCKER:-sudo docker}
 
